@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="normalize.css">
+  <link rel="stylesheet" href="base.css">
+  
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js"></script>
+  <script type="text/javascript">
+    // Store the initialize widget instance
+    var googleTrans;
+    // Function to initialize the widget
+    function googleTranslateElementInit() {
+      googleTrans = new google.translate.TranslateElement({
+        pageLanguage: "en", 
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false,
+        includedLanguages: "fr,ja,ko,de,zh-TW, zh-CN"
+      }, "google_translate_element");
+    }
+
+    // Record if the widget is enabled or not
+    let isGoogleTransEnabled = false;
+    // Function for the button to toggle the translation
+    function toggleTranslate() {
+      // For first time loading, show the privacy notice
+      if (googleTrans === undefined) {
+        let ans = confirm("Some note about the privacy things");
+        if (!ans) return;
+      }
+
+      try {
+        // Load the widget if it is not loaded
+        if (googleTrans === undefined) googleTranslateElementInit();
+
+        // The button to toggle the function
+        const initBtn = document.getElementById("initBtn");
+        // The div which holding the widget
+        const langDropdown = document.getElementById("google_translate_element");
+
+        // Check if the widget is now enabled or not
+        if (isGoogleTransEnabled === false) {
+          // --- Enable the widget ---
+          initBtn.innerText = "Disable google translate";
+          isGoogleTransEnabled = true;
+          // Show the dropdown
+          langDropdown.style.display = null;
+        } else {
+          // --- Disable the widget ---
+          initBtn.innerText = "Enable google translate";
+          isGoogleTransEnabled = false;
+          // Hide the dropdown
+          langDropdown.style.display = "none";
+          // Cancel translation
+          document.querySelector("#\\:1\\.container, #\\:2\\.container")?.contentDocument?.querySelector("#\\:1\\.close, #\\:2\\.close")?.click();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  </script>
+  <style>
+    /* Hide annoying popup */
+    #goog-gt-tt {
+      display: none !important;
+    }
+  </style>
+  <title>Google translation widget demo</title>
+</head>
+<body>
+  <p>Text to be translated: brother</p>
+  <button type="button" id="initBtn" onclick="toggleTranslate()">Enable google translate</button>
+  <div id="google_translate_element" style="margin-top: 1rem;"></div>
+</body>
+</html>
